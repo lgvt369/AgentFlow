@@ -41,13 +41,6 @@
 
 ---
 
-## 联系我们
-如有任何问题，请通过[Issues](https://github.com/lgvt369/AgentFlow/issues)提交反馈。
-```
-
-请根据实际代码与需求进行细化。如果需要具体的代码文件描述，我也可以继续补充！
-```
-
 ## 🌟 Star History
 
 <a href="https://github.com/lgvt369/AgentFlow/stargazers" target="_blank" style="display: block" align="center">
@@ -57,3 +50,10 @@
     <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=lgvt369/AgentFlow&type=Date" />
   </picture>
 </a>
+
+## 联系我们
+如有任何问题，请通过[Issues](https://github.com/lgvt369/AgentFlow/issues)提交反馈。
+```
+
+请根据实际代码与需求进行细化。如果需要具体的代码文件描述，我也可以继续补充！
+```
