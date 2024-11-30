@@ -46,3 +46,18 @@
 ```
 
 请根据实际代码与需求进行细化。如果需要具体的代码文件描述，我也可以继续补充！
+```
+
+## 🌟 Star History
+
+<a href="https://github.com/lgvt369/AgentFlow/stargazers" target="_blank" style="display: block" align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=lgvt369/AgentFlow&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=lgvt369/AgentFlow&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=lgvt369/AgentFlow&type=Date" />
+  </picture>
+</a>
+
+<a href="#readme">
+    <img src="https://img.shields.io/badge/-返回顶部-7d09f1.svg" alt="#" align="right">
+</a>
