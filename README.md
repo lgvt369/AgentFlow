@@ -57,7 +57,3 @@
     <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=lgvt369/AgentFlow&type=Date" />
   </picture>
 </a>
-
-<a href="#readme">
-    <img src="https://img.shields.io/badge/-返回顶部-7d09f1.svg" alt="#" align="right">
-</a>
