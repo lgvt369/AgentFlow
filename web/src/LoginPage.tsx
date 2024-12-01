@@ -13,7 +13,9 @@ const LoginPage: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('Username:', username, 'Password:', password, 'Remember me:', rememberMe);
-    // 这里添加实际的登录逻辑，如发送请求到后端验证
+    // Here you would add actual login logic, such as sending a request to the backend
+    // Assuming login is successful, navigate to the homepage
+    navigate('/home'); // Redirect to the homepage
   };
 
   return (

@@ -1,9 +1,12 @@
 from flask import Blueprint, request, jsonify,Response
 from app.models.tools import Tools  
+from flask_cors import CORS  # 导入 CORS
 
 import json
 
 tools_bp = Blueprint('tools', __name__)
+
+CORS(tools_bp)  # 允许跨域请求
 
 @tools_bp.route('/api/tools', methods=['POST'])
 def search_tools():
@@ -50,7 +53,7 @@ def search_tools():
     }
     return Response(json.dumps(result),content_type="application/json",status=200)
 
-@tools_bp.route('/api/tools/add', methods=['POST'])
+@tools_bp.route('/api/tools/save', methods=['POST'])
 def create_or_update_tool():
     from app import db
     # 获取请求数据
@@ -81,3 +84,24 @@ def create_or_update_tool():
     db.session.commit()
 
     return Response(json.dumps(tool.to_dict()),content_type="application/json",status=200)
+
+@tools_bp.route('/api/tools/delete', methods=['POST'])
+def delete_tool():
+    from app import db
+    # 获取请求数据
+    data = request.json
+    tool_id = data.get('id', None)
+
+    if not tool_id:
+        return jsonify({'message': 'Tool ID is required'}), 400
+
+    # 查找工具
+    tool = Tools.query.get(tool_id)
+    if not tool:
+        return jsonify({'message': 'Tool not found'}), 404
+
+    # 删除工具
+    db.session.delete(tool)
+    db.session.commit()
+
+    return jsonify({'message': 'Tool deleted successfully'}), 200
