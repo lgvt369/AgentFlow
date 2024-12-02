@@ -1,6 +1,6 @@
 import React from "react";
-import { Layout, Menu, Input, Button, Pagination, Table, Switch, Modal, Form, notification } from "antd";
-import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
+import { Layout, Menu, Input, Button, Pagination, Table, Switch, Modal, Form, notification, Avatar, Collapse } from "antd";
+import { PlusOutlined, SearchOutlined, MessageOutlined, RobotOutlined } from "@ant-design/icons";
 
 const { Header, Content, Sider } = Layout;
 
@@ -31,7 +31,8 @@ const Homepage: React.FC = () => {
   });
   const [isModalVisible, setIsModalVisible] = React.useState(false);
   const [currentAgent, setCurrentAgent] = React.useState<Agent | null>(null);
-
+  const [collapsed, setCollapsed] = React.useState(true);
+  const [currentPageContent, setCurrentPageContent] = React.useState("agents"); // 新增状态来管理当前页面
 
   const fetchAgents = async (page: number, params = {}) => {
     try {
@@ -53,7 +54,10 @@ const Homepage: React.FC = () => {
   };
 
   const handleMenuClick = (key: string) => {
-    if (key === "2") {
+    if (key === "1") {
+      setCurrentPageContent("chat"); // 切换到聊天页面
+    } else if (key === "2") {
+      setCurrentPageContent("agents"); // 切换到Agents配置页面
       fetchAgents(currentPage, searchParams);
     }
   };
@@ -212,85 +216,99 @@ const Homepage: React.FC = () => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       {/* 侧边栏 */}
-      <Sider theme="light" width={200}>
+      <Sider theme="light" width={200} collapsed={collapsed}>
         <Menu
           mode="inline"
           defaultSelectedKeys={["1"]}
           style={{ height: "100%", borderRight: 0 }}
           onClick={({ key }) => handleMenuClick(key)}
         >
-          <Menu.Item key="1"> 聊天 </Menu.Item>
-          <Menu.Item key="2"> Agents配置 </Menu.Item>
-          <Menu.Item key="3"> 账户设置 </Menu.Item>
+          <Menu.Item key="1" icon={<MessageOutlined />}> 聊天 </Menu.Item>
+          <Menu.Item key="2" icon={<RobotOutlined />}> Agents配置 </Menu.Item>
+          <div style={{ marginTop: 'auto', padding: '16px', position: 'absolute', bottom: 0, left: 0 }}>
+            <Menu.Item key="3" icon={<Avatar size="small" icon={<PlusOutlined />} />}></Menu.Item>
+          </div>
         </Menu>
       </Sider>
       <Layout>
         <Header style={{ background: "#fff", padding: "0 20px", display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2 style={{ margin: 0 }}>Agents配置</h2>
-          <div style={{ flex: 1 }} />
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Input
-              placeholder="请输入code"
-              style={{ width: 120, marginRight: 10 }}
-              onChange={(e) =>
-                setSearchParams({ ...searchParams, code: e.target.value })
-              }
-            />
-            <Input
-              placeholder="请输入url"
-              style={{ width: 120, marginRight: 10 }}
-              onChange={(e) =>
-                setSearchParams({ ...searchParams, url: e.target.value })
-              }
-            />
-            <Input
-              placeholder="请输入描述"
-              style={{ width: 120, marginRight: 10 }}
-              onChange={(e) =>
-                setSearchParams({ ...searchParams, description: e.target.value })
-              }
-            />
-            <Input
-              placeholder="请输入类型"
-              style={{ width: 120, marginRight: 10 }}
-              onChange={(e) =>
-                setSearchParams({ ...searchParams, type: e.target.value })
-              }
-            />
-            <Input
-              placeholder="请输入渠道"
-              style={{ width: 120, marginRight: 10 }}
-              onChange={(e) =>
-                setSearchParams({ ...searchParams, channel: e.target.value })
-              }
-            />
-            <Button type="primary" icon={<SearchOutlined />} onClick={handleSearch}>
-              搜索
-            </Button>
-            <Button type="primary" icon={<PlusOutlined />} onClick={() => handleAdd()} style={{ marginLeft: 10 }}>
-              新增
-            </Button>
-          </div>
+          {currentPageContent === "agents" ? (
+            <>
+              <h2 style={{ margin: 0 }}>Agents配置</h2>
+              <div style={{ flex: 1 }} />
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Input
+                  placeholder="请输入code"
+                  style={{ width: 120, marginRight: 10 }}
+                  onChange={(e) =>
+                    setSearchParams({ ...searchParams, code: e.target.value })
+                  }
+                />
+                <Input
+                  placeholder="请输入url"
+                  style={{ width: 120, marginRight: 10 }}
+                  onChange={(e) =>
+                    setSearchParams({ ...searchParams, url: e.target.value })
+                  }
+                />
+                <Input
+                  placeholder="请输入描述"
+                  style={{ width: 120, marginRight: 10 }}
+                  onChange={(e) =>
+                    setSearchParams({ ...searchParams, description: e.target.value })
+                  }
+                />
+                <Input
+                  placeholder="请输入类型"
+                  style={{ width: 120, marginRight: 10 }}
+                  onChange={(e) =>
+                    setSearchParams({ ...searchParams, type: e.target.value })
+                  }
+                />
+                <Input
+                  placeholder="请输入渠道"
+                  style={{ width: 120, marginRight: 10 }}
+                  onChange={(e) =>
+                    setSearchParams({ ...searchParams, channel: e.target.value })
+                  }
+                />
+                <Button type="primary" icon={<SearchOutlined />} onClick={handleSearch}>
+                  搜索
+                </Button>
+                <Button type="primary" icon={<PlusOutlined />} onClick={() => handleAdd()} style={{ marginLeft: 10 }}>
+                  新增
+                </Button>
+              </div>
+            </>
+          ) : (
+            <h2 style={{ margin: 0 }}>聊天页面</h2>
+          )}
         </Header>
         {/* 右侧展示区域 */}
         <Content style={{ padding: 20 }}>
-          {/* 使 Table 组件替代 Card */}
-          <Table
-            dataSource={agents}
-            columns={columns}
-            pagination={{
-              current: currentPage,
-              total: totalAgents,
-              pageSize: 10,
-              onChange: (page) => fetchAgents(page, searchParams),
-              pageSizeOptions: ['5', '10', '20', '50'],
-              showSizeChanger: true,
-              onShowSizeChange: (current, size) => {
-                fetchAgents(1, { ...searchParams, per_page: size });
-              },
-            }}
-            rowKey="id" // 设置唯一键
-          />
+          {currentPageContent === "agents" ? (
+            <Table
+              dataSource={agents}
+              columns={columns}
+              pagination={{
+                current: currentPage,
+                total: totalAgents,
+                pageSize: 10,
+                onChange: (page) => fetchAgents(page, searchParams),
+                pageSizeOptions: ['5', '10', '20', '50'],
+                showSizeChanger: true,
+                onShowSizeChange: (current, size) => {
+                  fetchAgents(1, { ...searchParams, per_page: size });
+                },
+              }}
+              rowKey="id" // 设置唯一键
+            />
+          ) : (
+            <div>
+              {/* 聊天页面内容 */}
+              <p>这里是聊天页面内容</p>
+            </div>
+          )}
         </Content>
       </Layout>
       <Modal
